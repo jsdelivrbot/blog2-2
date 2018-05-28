@@ -16,9 +16,13 @@ class ArtigosController extends Controller
     {
         $listaMigalhas = json_encode([//transforma a lista abaixo em json para ser utilizada em js
             ["titulo"=>"Home", "url"=> route('home')],
-            ["titulo"=>"Lista de Compras", "url"=> ""],
+            ["titulo"=>"Lista de Artigos", "url"=> ""],
         ]);
-        return view('admin.artigos.index', compact('listaMigalhas'));
+        $listaArtigos = json_encode([//transforma a lista abaixo em json para ser utilizada em js
+            ["id"=> 1, "titulo"=>"PHP OOP", "descricao"=> "Curso de PHP OOP"],
+            ["id"=> 2, "titulo"=>"Vue JS", "descricao"=> "Curso de Vue JS"]
+        ]);
+        return view('admin.artigos.index', compact('listaMigalhas', 'listaArtigos'));
     }
 
     /**

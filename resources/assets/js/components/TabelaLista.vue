@@ -2,7 +2,9 @@
     <div>
         <!-- classes bootstrap 3 para deixar campos na mesma linha e jogar um para a direita -->
         <div class="form-inline">
-            <a v-if="criar" v-bind:href="criar">Criar</a>
+            <!-- <p>{{this.$store.state.itens}}</p> -->
+            <a v-if="criar && !modal" v-bind:href="criar">Criar</a>
+            <modallink v-if="criar && modal" tipo="link" nome="adicionar" titulo="Criar" css=""></modallink>
             <div class="form-group pull-right">
                 <!-- search é do html5; v-model define uma variável q após preechida a form será atribuido um valor -->
                 <input type="search" class="form-control" placeholder="Buscar" v-model="buscar">
@@ -25,18 +27,28 @@
                             <form v-bind:id="index" v-if="deletar && token" v-bind:action="deletar" method="POST">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <input type="hidden" name="_token" v-bind:value="token">
-                                <a v-if="detalhe" v-bind:href="detalhe">Detalhe |</a>
-                                <a v-if="editar" v-bind:href="editar"> Editar |</a>
+
+                                <a v-if="detalhe && !modal" v-bind:href="detalhe">Detalhe |</a>
+                                <modallink v-if="detalhe && modal" v-bind:item="item" tipo="link" nome="detalhe" titulo=" Detalhe|" css=""></modallink>
+
+                                <a v-if="editar && !modal" v-bind:href="editar"> Editar |</a>
+                                <modallink v-if="editar && modal" v-bind:item="item" tipo="link" nome="editar" titulo=" Editar|" css=""></modallink>
                                 <a href="#" v-on:click="executaForm(index)"> Deletar</a>
                             </form>
                             <span v-if="!token">
-                                <a v-if="detalhe" v-bind:href="detalhe">Detalhe |</a>
-                                <a v-if="editar" v-bind:href="editar"> Editar |</a>
+                                <a v-if="detalhe && !modal" v-bind:href="detalhe">Detalhe |</a>
+                                <modallink v-if="detalhe && modal" v-bind:item="item" tipo="link" nome="detalhe" titulo=" Detalhe|" css=""></modallink>
+
+                                <a v-if="editar && !modal" v-bind:href="editar"> Editar |</a>
+                                <modallink v-if="editar && modal" tipo="link" nome="editar" titulo=" Editar|" css=""></modallink>
                                 <a v-if="deletar" v-bind:href="deletar"> Deletar</a>
                             </span>
                              <span v-if="token && !deletar">
-                                <a v-if="detalhe" v-bind:href="detalhe">Detalhe |</a>
-                                <a v-if="editar" v-bind:href="editar"> Editar</a>
+                                <a v-if="detalhe && !modal" v-bind:href="detalhe">Detalhe |</a>
+                                <modallink v-if="detalhe && modal" v-bind:item="item" tipo="link" nome="detalhe" titulo=" Detalhe|" css=""></modallink>
+
+                                <a v-if="editar && !modal" v-bind:href="editar"> Editar</a>
+                                <modallink v-if="editar && modal" tipo="link" nome="editar" titulo=" Editar|" css=""></modallink>
                             </span>
                         </td>
                     </tr>
@@ -47,7 +59,7 @@
 
 <script>
     export default {
-        props: ['titulos', 'itens', 'ordem', 'odercol', 'criar', 'detalhe', 'editar', 'deletar', 'token'],
+        props: ['titulos', 'itens', 'ordem', 'odercol', 'criar', 'detalhe', 'editar', 'deletar', 'token', 'modal'],
         data: function() {
             return {
                 buscar: '',
@@ -70,40 +82,42 @@
         },
         computed: {//aconselhável p carregar no boot da página
             lista: function () {
+                //commit define o método q vai utlizar dado em app.js vuex; opa: objeto
+                //this.$store.commit('setItens', {opa:"OK"})//modificando o obj da 'loja' vuex
                 let ordem = this.ordemAux;//decrescente
                 let ordemCol = this.ordemAuxCol;
                 ordem = ordem.toLowerCase();
                 ordemCol = parseInt(ordemCol);//transf string em inteiro
                 if (ordem == 'asc') {//crescente
                     this.itens.sort(function(a,b) {
-                        if (a[ordemCol] > b[ordemCol]) {return 1;}
-                        if (a[ordemCol] < b[ordemCol]) {return -1;}
+                        if (Object.values(a)[ordemCol] > Object.values(b)[ordemCol]) {return 1;}
+                        if (Object.values(a)[ordemCol] < Object.values(b)[ordemCol]) {return -1;}
                         return 0;
                     });
                 } else {
                     this.itens.sort(function(a,b) {//função js p ordenação
                     //a=b retorna 0, a>b retorna >0, a<b retorna <0
-                        if (a[ordemCol] < b[ordemCol]) {return 1;}//primeira coluna na tabela, id
-                        if (a[ordemCol] > b[ordemCol]) {return -1;}
+                        if (Object.values(a)[ordemCol] < Object.values(b)[ordemCol]) {return 1;}//primeira coluna na tabela, id
+                        if (Object.values(a)[ordemCol] > Object.values(b)[ordemCol]) {return -1;}
                         return 0; //case a = b
                     });
                 }
-
-                return this.itens.filter(res => {//javascript função filter para buscar (search)
-                    for(let k = 0; k < res.length; k++) {//enquanto k < tamanho de res
-                        if ((res[k] + "").toLowerCase().indexOf(this.buscar.toLowerCase()) >=0) {
-                        return true;//(res[k] + "") transforma tudo em string pq há inteiros em id
+                if(this.buscar) {
+                    return this.itens.filter(res => {//javascript função filter para buscar (search)
+                        for(let k = 0; k < res.length; k++) {//enquanto k < tamanho de res
+                            if ((res[k] + "").toLowerCase().indexOf(this.buscar.toLowerCase()) >=0) {
+                            return true;//(res[k] + "") transforma tudo em string pq há inteiros em id
+                            }
                         }
-                    }
-                    //if (res[1].toLowerCase().indexOf(this.buscar.toLowerCase()) >=0) {
-                        //js - verifica a posição 1 (titulo) dos items, passa p minuscula e compara com variável
-                        //busca; caso < 0 não encontrou nada; positivou ounulo encontrou algo
-                    //    return true;
-                    //} else {
-                        return false;
-                    //}
-                });
-
+                                        //if (res[1].toLowerCase().indexOf(this.buscar.toLowerCase()) >=0) {
+                                            //js - verifica a posição 1 (titulo) dos items, passa p minuscula e compara com variável
+                                            //busca; caso < 0 não encontrou nada; positivou ounulo encontrou algo
+                                        //    return true;
+                                        //} else {
+                            return false;
+                                        //}
+                    });
+                }
                 return this.itens;
             }
         }
