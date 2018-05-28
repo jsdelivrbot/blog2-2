@@ -14,11 +14,11 @@ class ArtigosController extends Controller
      */
     public function index()
     {
-       $listaMigalhas = json_encode([//transforma a lista abaixo em json para ser utilizada em js
+        $listaMigalhas = json_encode([//transforma a lista abaixo em json para ser utilizada em js
             ["titulo"=>"Home", "url"=> route('home')],
             ["titulo"=>"Lista de Compras", "url"=> ""],
-       ]);
-       return view('admin.artigos.index', compact('listaMigalhas'));
+        ]);
+        return view('admin.artigos.index', compact('listaMigalhas'));
     }
 
     /**
