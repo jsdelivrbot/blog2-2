@@ -104,6 +104,7 @@
                 }
                 if(this.buscar) {
                     return this.itens.filter(res => {//javascript função filter para buscar (search)
+                        res = Object.values(res);
                         for(let k = 0; k < res.length; k++) {//enquanto k < tamanho de res
                             if ((res[k] + "").toLowerCase().indexOf(this.buscar.toLowerCase()) >=0) {
                             return true;//(res[k] + "") transforma tudo em string pq há inteiros em id
