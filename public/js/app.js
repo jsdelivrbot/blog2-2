@@ -1441,7 +1441,11 @@ Vue.component('formulario', __webpack_require__(71));
 //abaixo está o motor do sistema
 var app = new Vue({
   el: '#app',
-  store: store
+  store: store,
+  mounted: function mounted() {
+    console.log("ok");
+    document.getElementById('app').style.display = "block";
+  }
 });
 
 /***/ }),
@@ -45367,7 +45371,7 @@ var render = function() {
                           {
                             attrs: {
                               id: index,
-                              action: _vm.deletar,
+                              action: _vm.deletar + item.id,
                               method: "POST"
                             }
                           },
@@ -45395,6 +45399,7 @@ var render = function() {
                               ? _c("modallink", {
                                   attrs: {
                                     item: item,
+                                    url: _vm.detalhe,
                                     tipo: "link",
                                     nome: "detalhe",
                                     titulo: " Detalhe|",
@@ -45413,6 +45418,7 @@ var render = function() {
                               ? _c("modallink", {
                                   attrs: {
                                     item: item,
+                                    url: _vm.editar,
                                     tipo: "link",
                                     nome: "editar",
                                     titulo: " Editar|",
@@ -45452,6 +45458,7 @@ var render = function() {
                               ? _c("modallink", {
                                   attrs: {
                                     item: item,
+                                    url: _vm.detalhe,
                                     tipo: "link",
                                     nome: "detalhe",
                                     titulo: " Detalhe|",
@@ -45470,6 +45477,8 @@ var render = function() {
                               ? _c("modallink", {
                                   attrs: {
                                     tipo: "link",
+                                    item: item,
+                                    url: _vm.editar,
                                     nome: "editar",
                                     titulo: " Editar|",
                                     css: ""
@@ -45501,6 +45510,7 @@ var render = function() {
                               ? _c("modallink", {
                                   attrs: {
                                     item: item,
+                                    url: _vm.detalhe,
                                     tipo: "link",
                                     nome: "detalhe",
                                     titulo: " Detalhe|",
@@ -45519,6 +45529,8 @@ var render = function() {
                               ? _c("modallink", {
                                   attrs: {
                                     tipo: "link",
+                                    item: item,
+                                    url: _vm.editar,
                                     nome: "editar",
                                     titulo: " Editar|",
                                     css: ""
@@ -45887,10 +45899,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['tipo', 'nome', 'titulo', 'css', 'item'],
+    props: ['tipo', 'nome', 'titulo', 'css', 'item', 'url'],
     methods: {
         preencheFormulario: function preencheFormulario() {
-            this.$store.commit('setItem', this.item);
+            var _this = this;
+
+            axios.get(this.url + this.item.id).then(function (res) {
+                //ajax do laravel, a url é this.url + this.item.id
+                //res retorno do obj
+                //console.log(res.data);//para verificar se chegam os dados
+                _this.$store.commit('setItem', res.data);
+            });
+            //this.$store.commit('setItem', this.item);//dispensado pela linha de cima
         }
     }
 });

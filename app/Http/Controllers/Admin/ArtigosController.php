@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Artigo;
 
 class ArtigosController extends Controller
 {
@@ -18,10 +19,7 @@ class ArtigosController extends Controller
             ["titulo"=>"Home", "url"=> route('home')],
             ["titulo"=>"Lista de Artigos", "url"=> ""],
         ]);
-        $listaArtigos = json_encode([//transforma a lista abaixo em json para ser utilizada em js
-            ["id"=> 1, "titulo"=>"PHP OOP", "descricao"=> "Curso de PHP OOP"],
-            ["id"=> 2, "titulo"=>"Vue JS", "descricao"=> "Curso de Vue JS"]
-        ]);
+        $listaArtigos = json_encode(Artigo::select('id', 'titulo', 'descricao', 'data')->get());//transforma a lista abaixo em json para ser utilizada em js
         return view('admin.artigos.index', compact('listaMigalhas', 'listaArtigos'));
     }
 
@@ -43,7 +41,20 @@ class ArtigosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //dd($request->all());//testando com dump and die
+        $data = $request->all();
+        $validacao = \Validator::make($data, [
+            'titulo'=> 'required',
+            'descricao'=>'required',
+            'conteudo'=>'required',
+            'data'=>'required'
+        ]);
+        if ($validacao->fails()) {
+            return redirect()->back()->withErrors($validacao)->withInput();
+        }
+
+        Artigo::create($data);
+        return redirect()->back();//ultima pagina q pediu
     }
 
     /**
@@ -54,7 +65,7 @@ class ArtigosController extends Controller
      */
     public function show($id)
     {
-        //
+        return Artigo::findOrFail($id);//vai retornar um json
     }
 
     /**
@@ -77,7 +88,19 @@ class ArtigosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+        $validacao = \Validator::make($data, [
+            'titulo'=> 'required',
+            'descricao'=>'required',
+            'conteudo'=>'required',
+            'data'=>'required'
+        ]);
+        if ($validacao->fails()) {
+            return redirect()->back()->withErrors($validacao)->withInput();
+        }
+
+        Artigo::find($id)->update($data);
+        return redirect()->back();
     }
 
     /**
@@ -88,6 +111,7 @@ class ArtigosController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Artigo::find($id)->delete();
+        return redirect()->back();
     }
 }

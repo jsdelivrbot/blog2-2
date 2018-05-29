@@ -14,7 +14,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div id="app">
+    <div id="app" style="display:none">
         <topo titulo="{{ config('app.name', 'Laravel') }}" url="{{ url('/') }}">
             <!-- o q está aqui dentro será um slot do vue e será colocado no componente topo -->
             @guest
@@ -33,7 +33,7 @@
                                                      document.getElementById('logout-form').submit();">
                                             Logout
                             </a>
-
+                            {{-- colocou style none para corrigir bug; ajustou em js/apps.js em moutend style = block --}}
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 {{ csrf_field() }}
                             </form>
