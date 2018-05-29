@@ -84,18 +84,19 @@
             lista: function () {
                 //commit define o método q vai utlizar dado em app.js vuex; opa: objeto
                 //this.$store.commit('setItens', {opa:"OK"})//modificando o obj da 'loja' vuex
+                let lista = this.itens.data;
                 let ordem = this.ordemAux;//decrescente
                 let ordemCol = this.ordemAuxCol;
                 ordem = ordem.toLowerCase();
                 ordemCol = parseInt(ordemCol);//transf string em inteiro
                 if (ordem == 'asc') {//crescente
-                    this.itens.sort(function(a,b) {
+                    lista.sort(function(a,b) {
                         if (Object.values(a)[ordemCol] > Object.values(b)[ordemCol]) {return 1;}
                         if (Object.values(a)[ordemCol] < Object.values(b)[ordemCol]) {return -1;}
                         return 0;
                     });
                 } else {
-                    this.itens.sort(function(a,b) {//função js p ordenação
+                    lista.sort(function(a,b) {//função js p ordenação
                     //a=b retorna 0, a>b retorna >0, a<b retorna <0
                         if (Object.values(a)[ordemCol] < Object.values(b)[ordemCol]) {return 1;}//primeira coluna na tabela, id
                         if (Object.values(a)[ordemCol] > Object.values(b)[ordemCol]) {return -1;}
@@ -103,7 +104,7 @@
                     });
                 }
                 if(this.buscar) {
-                    return this.itens.filter(res => {//javascript função filter para buscar (search)
+                    return lista.filter(res => {//javascript função filter para buscar (search)
                         res = Object.values(res);
                         for(let k = 0; k < res.length; k++) {//enquanto k < tamanho de res
                             if ((res[k] + "").toLowerCase().indexOf(this.buscar.toLowerCase()) >=0) {
@@ -119,7 +120,7 @@
                                         //}
                     });
                 }
-                return this.itens;
+                return lista;
             }
         }
     }

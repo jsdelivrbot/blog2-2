@@ -16,11 +16,15 @@
 
             <tabela-lista
                 v-bind:titulos="['#', 'Título', 'Descrição','data']"
-                v-bind:itens="{{$listaArtigos}}"
+                {{-- precisa ser em json abaixo; vem vindo de controller index--}}
+                v-bind:itens="{{json_encode($listaArtigos)}}"
                 ordem="desc" ordemcol="1"
                 criar="#criar" detalhe="/admin/artigos/"  editar="/admin/artigos/" deletar="/admin/artigos/" token="{{csrf_token()}}"
                 modal="sim"
             ></tabela-lista>
+            <div align="center">
+                {{$listaArtigos->links()}}
+            </div>
         </painel>
     </pagina>
     <modal nome="adicionar" titulo="Adicionar">

@@ -45218,13 +45218,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             //commit define o método q vai utlizar dado em app.js vuex; opa: objeto
             //this.$store.commit('setItens', {opa:"OK"})//modificando o obj da 'loja' vuex
+            var lista = this.itens.data;
             var ordem = this.ordemAux; //decrescente
             var ordemCol = this.ordemAuxCol;
             ordem = ordem.toLowerCase();
             ordemCol = parseInt(ordemCol); //transf string em inteiro
             if (ordem == 'asc') {
                 //crescente
-                this.itens.sort(function (a, b) {
+                lista.sort(function (a, b) {
                     if (Object.values(a)[ordemCol] > Object.values(b)[ordemCol]) {
                         return 1;
                     }
@@ -45234,7 +45235,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     return 0;
                 });
             } else {
-                this.itens.sort(function (a, b) {
+                lista.sort(function (a, b) {
                     //função js p ordenação
                     //a=b retorna 0, a>b retorna >0, a<b retorna <0
                     if (Object.values(a)[ordemCol] < Object.values(b)[ordemCol]) {
@@ -45247,7 +45248,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
             }
             if (this.buscar) {
-                return this.itens.filter(function (res) {
+                return lista.filter(function (res) {
                     //javascript função filter para buscar (search)
                     res = Object.values(res);
                     for (var k = 0; k < res.length; k++) {
@@ -45265,7 +45266,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     //}
                 });
             }
-            return this.itens;
+            return lista;
         }
     }
 });
