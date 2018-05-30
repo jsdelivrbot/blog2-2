@@ -10,4 +10,9 @@ class Artigo extends Model
     use SoftDeletes;
     protected $fillable = ['titulo', 'descricao', 'conteudo', 'data'];
     protected $dates = ['deleted_at'];
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');//a chave já foi dada na migration com user_id
+    }
 }

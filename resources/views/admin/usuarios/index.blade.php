@@ -41,8 +41,8 @@
                 <div class="form-group">
                     <label for="autor">Autor</label>
                     <select class="form-control" id="autor" name="autor">
-                        <option {{(old('autor') && old('autor') == 'N' ? 'selected' : '')}} value="N">Não</option>
-                        <option {{(old('autor') && old('autor') == 'S' ? 'selected' : '')}} value="S">Sim</option>
+                      <option {{(old('autor') && old('autor') == 'N' ? 'selected' : '' )}} value="N">Não</option>
+                      <option {{(old('autor') && old('autor') == 'S' ? 'selected' : ''  )}} value="S">Sim</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -66,7 +66,7 @@
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" class="form-control" id="demail" name="email" v-model="$store.state.item.email" placeholder="email">
+                    <input type="email" class="form-control" id="email" name="email" v-model="$store.state.item.email" placeholder="email">
                 </div>
                 <div class="form-group">
                     <label for="autor">Autor</label>
