@@ -29,6 +29,7 @@
         "jquery": "^3.3.1",
         "node-sass": "^4.9.0",
         "url-loader": "^1.0.1",
+        "vue-ckeditor2": "^2.0.3",
         "vue2-animate": "^2.0.0"
     }
 }

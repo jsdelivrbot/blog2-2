@@ -17,7 +17,7 @@ class UsuariosController extends Controller
     public function index()
     {
         $listaMigalhas = json_encode([//transforma a lista abaixo em json para ser utilizada em js
-            ["titulo"=>"Home", "url"=> route('home')],
+            ["titulo"=>"Admin", "url"=> route('admin')],
             ["titulo"=>"Lista de Usuários", "url"=> ""],
         ]);
         $listaModelo = User::select('id', 'name', 'email')->paginate(5);

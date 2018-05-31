@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Artigo;
+//use Illuminate\Support\Facades\DB;
 
 class ArtigosController extends Controller
 {
@@ -16,14 +17,24 @@ class ArtigosController extends Controller
     public function index()
     {
         $listaMigalhas = json_encode([//transforma a lista abaixo em json para ser utilizada em js
-            ["titulo"=>"Home", "url"=> route('home')],
+            ["titulo"=>"Admin", "url"=> route('admin')],
             ["titulo"=>"Lista de Artigos", "url"=> ""],
         ]);
-        $listaArtigos = Artigo::select('id', 'titulo', 'descricao', 'user_id', 'data')->paginate(5);
-        foreach ($listaArtigos as $key => $value) {
-            $value->user_id = \App\User::find($value->user_id)->name;
-            unset($value->user);
-        }
+        //outros métodos
+        //$listaArtigos = Artigo::select('id', 'titulo', 'descricao', 'user_id', 'data')->paginate(5);
+        // foreach ($listaArtigos as $key => $value) {
+        //     $value->user_id = \App\User::find($value->user_id)->name;
+        //     unset($value->user);
+        // }
+        //metodo usando  query builder em vez do método acima; abaixo users.name ao invés de users.user_id pq quer somente o nome
+        // $listaArtigos = DB::table('artigos')
+        //                 ->join('users', 'users.id', '=', 'artigos.user_id')
+        //                 ->select('artigos.id', 'artigos.titulo', 'artigos.descricao', 'users.name', 'artigos.data')
+        //                 ->whereNull('deleted_at')
+        //                 ->paginate(5);
+        //a logica acima foi passada para o modelo Artigo e é chamada pelo método abaixo
+        $listaArtigos = artigo::listaArtigos(5);
+
         return view('admin.artigos.index', compact('listaMigalhas', 'listaArtigos'));
     }
 

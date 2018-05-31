@@ -1437,6 +1437,8 @@ Vue.component('migalhas', __webpack_require__(62));
 Vue.component('modal', __webpack_require__(65));
 Vue.component('modallink', __webpack_require__(68));
 Vue.component('formulario', __webpack_require__(71));
+Vue.component('ckeditor', __webpack_require__(84));
+Vue.component('artigocard', __webpack_require__(85));
 
 //abaixo está o motor do sistema
 var app = new Vue({
@@ -46189,6 +46191,294 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 75 */,
+/* 76 */,
+/* 77 */,
+/* 78 */,
+/* 79 */,
+/* 80 */,
+/* 81 */,
+/* 82 */,
+/* 83 */,
+/* 84 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VueCkeditor", function() { return VueCkeditor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "install", function() { return install; });
+var VueCkeditor = function VueCkeditor() {
+  var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var name = opts.name || 'VueCkeditor';
+  var inc = new Date().getTime();
+  return {
+    name: name,
+    props: {
+      name: {
+        type: String,
+        default: function _default() {
+          return "editor-".concat(++inc);
+        }
+      },
+      value: {
+        type: String
+      },
+      id: {
+        type: String,
+        default: function _default() {
+          return "editor-".concat(inc);
+        }
+      },
+      types: {
+        type: String,
+        default: function _default() {
+          return "classic";
+        }
+      },
+      config: {
+        type: Object,
+        default: function _default() {}
+      }
+    },
+    data: function data() {
+      return {
+        destroyed: false,
+        instanceValue: ''
+      };
+    },
+    computed: {
+      instance: function instance() {
+        return CKEDITOR.instances[this.id];
+      }
+    },
+    watch: {
+      value: function value(val) {
+        try {
+          if (this.instance) {
+            this.update(val);
+          }
+        } catch (e) {}
+      }
+    },
+    mounted: function mounted() {
+      this.create();
+    },
+    beforeDestroy: function beforeDestroy() {
+      this.destroy();
+    },
+    render: function render(h) {
+      return h('div', {
+        class: 'ckeditor'
+      }, [h('textarea', {
+        attrs: {
+          name: this.name,
+          id: this.id
+        },
+        props: {
+          types: this.types,
+          config: this.config
+        },
+        domProps: {
+          value: this.value
+        }
+      })]);
+    },
+    methods: {
+      create: function create() {
+        var _this = this;
+
+        if (typeof CKEDITOR === 'undefined') {
+          console.log('CKEDITOR is missing (http://ckeditor.com/)');
+        } else {
+          if (this.types === 'inline') {
+            CKEDITOR.inline(this.id, this.config);
+          } else {
+            CKEDITOR.replace(this.id, this.config);
+          }
+
+          this.instance.setData(this.value);
+          this.instance.on('instanceReady', function () {
+            _this.instance.setData(_this.value);
+          });
+          this.instance.on('change', this.onChange);
+          this.instance.on('blur', this.onBlur);
+          this.instance.on('focus', this.onFocus);
+          this.instance.on('fileUploadResponse', function () {
+            setTimeout(function () {
+              _this.onChange;
+            }, 0);
+          });
+        }
+      },
+      update: function update(val) {
+        if (this.instanceValue !== val) {
+          this.instance.setData(val, {
+            internal: false
+          });
+        }
+      },
+      destroy: function destroy() {
+        try {
+          if (!this.destroyed) {
+            this.instance.focusManager.blur(true);
+            CKEDITOR.removeAllListeners();
+            this.instance.destroy(true);
+            this.destroyed = true;
+          }
+        } catch (e) {}
+      },
+      onChange: function onChange() {
+        var html = this.instance.getData();
+
+        if (html !== this.value) {
+          this.$emit('input', html);
+          this.instanceValue = html;
+        }
+      },
+      onBlur: function onBlur() {
+        this.$emit('blur', this.instance);
+      },
+      onFocus: function onFocus() {
+        this.$emit('focus', this.instance);
+      }
+    }
+  };
+};
+var install = function install(Vue, opts) {
+  var Component = VueCkeditor(opts);
+  Vue.component(Component.name, Component);
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (install);
+
+
+
+/***/ }),
+/* 85 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(86)
+/* template */
+var __vue_template__ = __webpack_require__(87)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/ArtigoCard.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-691d5716", Component.options)
+  } else {
+    hotAPI.reload("data-v-691d5716", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 86 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['titulo', 'descricao', 'link', 'imagem', 'data', 'autor', 'sm', 'md']
+});
+
+/***/ }),
+/* 87 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { class: "col-sm-" + (_vm.sm || "6") + " col-md-" + (_vm.md || "4") },
+    [
+      _c("div", { staticClass: "thumbnail" }, [
+        _c("img", {
+          attrs: {
+            src:
+              "https://coletiva.net/files/e4da3b7fbbce2345d7772b0674a318d5/midia_foto/20170713/118815-maior_artigo_jul17.jpg",
+            alt: "..."
+          }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "caption" }, [
+          _c("small", [_vm._v(_vm._s(_vm.data) + " - " + _vm._s(_vm.autor))]),
+          _vm._v(" "),
+          _c("h3", [_vm._v(_vm._s(_vm.descricao))]),
+          _vm._v(" "),
+          _c("p", [_vm._v("Teste de Descrição")]),
+          _vm._v(" "),
+          _c("p", [
+            _c(
+              "a",
+              {
+                staticClass: "btn btn-primary",
+                attrs: { href: _vm.link, role: "button" }
+              },
+              [_vm._v("Ler mais")]
+            )
+          ])
+        ])
+      ])
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-691d5716", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
