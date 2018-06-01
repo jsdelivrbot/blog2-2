@@ -22,7 +22,7 @@
                     <!-- substituiu itens por lista q é função definida nas props -->
                     <tr v-for="(item, index) in lista">
                         <!-- são dois loops pq é um array de um array na index: [[ , ]]-->
-                        <td v-for="i in item">{{i}}</td>
+                        <td v-for="i in item">{{i | formataData}}</td>
                         <td v-if="detalhe || editar || deletar">
                             <form v-bind:id="index" v-if="deletar && token" v-bind:action="deletar + item.id" method="POST">
                                 <input type="hidden" name="_method" value="DELETE">
@@ -78,6 +78,17 @@
                 } else {
                     this.ordemAux = 'asc';
                 }
+            }
+        },
+        filters: {
+            formataData: function(valor){//valor  data a ser tratada
+                if(!valor) return '';
+                valor = valor.toString();
+                if(valor.split('-').length == 3) {//3 elementos sepados por -: y-m-d
+                    valor = valor.split('-');//virou um array
+                    return valor[2] + '/' + valor[1] + '/' + valor[0];
+                }
+                return valor;
             }
         },
         computed: {//aconselhável p carregar no boot da página

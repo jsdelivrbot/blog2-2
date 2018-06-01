@@ -46,7 +46,8 @@
 
       <div class="form-group">
         <label for="addConteudo">Conteúdo</label>
-        <ckeditor
+        <textarea class="form-control" id="conteudo" name="conteudo" >{{old('conteudo')}}</textarea>
+        {{-- <ckeditor
           id="addConteudo"
           name="conteudo"
           value="{{old('conteudo')}}"
@@ -56,7 +57,7 @@
                     ],
                     height: 200
                   }" >
-        </ckeditor>
+        </ckeditor> --}}
       </div>
 
       <div class="form-group">
@@ -83,7 +84,8 @@
       </div>
       <div class="form-group">
         <label for="editConteudo">Conteúdo</label>
-        <ckeditor
+        <textarea class="form-control" id="conteudo" name="conteudo" v-model="$store.state.item.conteudo" ></textarea>
+        {{-- <ckeditor
           id="editConteudo"
           name="conteudo"
           v-model="$store.state.item.conteudo"
@@ -93,7 +95,7 @@
                     ],
                     height: 200
                   }" >
-        </ckeditor>
+        </ckeditor> --}}
       </div>
 
       <div class="form-group">
